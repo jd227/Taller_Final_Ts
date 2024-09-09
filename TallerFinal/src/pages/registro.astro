@@ -1,0 +1,39 @@
+---
+import Header from '../components/Header.astro';
+---
+<html>
+    
+<head>
+    <Header/>
+    <title>Registro de Carro</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css">
+</head>
+<body class="bg-black text-white">
+    <div class="min-h-screen flex items-center justify-center">
+        <form class="bg-gray-800 p-8 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold mb-6 text-center">Bienvenido a registra tu carro</h2>
+            <div class="mb-4">
+                <label for="marca" class="block text-sm font-bold mb-2">MARCA:</label>
+                <input type="text" id="marca" name="marca" placeholder="Escribe la marca" class="w-full p-2 rounded-md text-black">
+            </div>
+            <div class="mb-4">
+                <label for="modelo" class="block text-sm font-bold mb-2">MODELO:</label>
+                <input type="text" id="modelo" name="modelo" placeholder="Escribe el modelo" class="w-full p-2 rounded-md text-black">
+            </div>
+            <div class="mb-4">
+                <label for="kilometraje" class="block text-sm font-bold mb-2">KILOMETRAJE:</label>
+                <input type="number" id="kilometraje" name="kilometraje" placeholder="Ej. 50000" class="w-full p-2 rounded-md text-black">
+            </div>
+            <div class="mb-4">
+                <label for="precio" class="block text-sm font-bold mb-2">PRECIO:</label>
+                <input type="text" id="precio" name="precio" placeholder="Ej. 20000" class="w-full p-2 rounded-md text-black">
+            </div>
+            <div class="mb-6">
+                <label for="imagen" class="block text-sm font-bold mb-2">IMAGEN:</label>
+                <input type="file" id="imagen" name="imagen" class="w-full p-2 file:bg-green-500 file:border-none file:text-white file:rounded-md">
+            </div>
+            <button type="submit" class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Registrar Carro</button>
+        </form>
+    </div>
+</body>
+</html>
