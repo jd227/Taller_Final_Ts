@@ -1,0 +1,75 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+<html>
+<head>
+    <title>Registro de Usuario - Tienda de Carros</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css">
+    <style>
+        body {
+            background-image: url('https://motor-import.com/wp-content/uploads/2021/01/Comment-importer-sa-voiture-du-Japon-avec-Motorimport1-1024x576.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .register-form {
+            background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <Header/>
+    <div class="flex justify-center items-center min-h-screen">
+        <form class="register-form flex flex-col p-8 bg-gray-800 rounded-lg shadow-md m-10 w-full max-w-md">
+            <h2 class="text-lg font-bold text-white mb-6 text-center">Registro de Usuario</h2>
+
+            <!-- Campo de nombre -->
+            <div class="mb-4">
+                <label for="name" class="block text-sm font-medium text-gray-300">Nombre Completo</label>
+                <input type="text" id="name" name="name" placeholder="Escribe tu nombre" class="mt-1 block w-full px-3 py-2 text-black rounded-md" required>
+            </div>
+
+            <!-- Campo de usuario -->
+            <div class="mb-4">
+                <label for="username" class="block text-sm font-medium text-gray-300">Nombre de Usuario</label>
+                <input type="text" id="username" name="username" placeholder="Escribe tu nombre de usuario" class="mt-1 block w-full px-3 py-2 text-black rounded-md" required>
+            </div>
+
+            <!-- Campo de contraseña -->
+            <div class="mb-4">
+                <label for="password" class="block text-sm font-medium text-gray-300">Contraseña</label>
+                <input type="password" id="password" name="password" placeholder="Escribe tu contraseña" class="mt-1 block w-full px-3 py-2 text-black rounded-md" required>
+            </div>
+
+            <!-- Campo de teléfono -->
+            <div class="mb-4">
+                <label for="phone" class="block text-sm font-medium text-gray-300">Teléfono</label>
+                <input type="tel" id="phone" name="phone" placeholder="Escribe tu número de teléfono" class="mt-1 block w-full px-3 py-2 text-black rounded-md" required>
+            </div>
+
+            <!-- Campo de sexo -->
+            <div class="mb-4">
+                <label for="sex" class="block text-sm font-medium text-gray-300">Sexo</label>
+                <select id="sex" name="sex" class="mt-1 block w-full px-3 py-2 text-black rounded-md" required>
+                    <option value="">Selecciona tu sexo</option>
+                    <option value="male">Masculino</option>
+                    <option value="female">Femenino</option>
+                    <option value="other">Otro</option>
+                </select>
+            </div>
+
+            <!-- Campo de edad -->
+            <div class="mb-4">
+                <label for="age" class="block text-sm font-medium text-gray-300">Edad</label>
+                <input type="number" id="age" name="age" placeholder="Escribe tu edad" class="mt-1 block w-full px-3 py-2 text-black rounded-md" required>
+            </div>
+
+            <!-- Botón de registro -->
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-all">
+                Registrarse
+            </button>
+        </form>
+    </div>
+    <Footer/>
+</body>
+</html>
