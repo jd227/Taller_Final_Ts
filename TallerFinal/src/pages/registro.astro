@@ -1,17 +1,30 @@
 ---
 import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 ---
 <html>
-    
+
+<Header/>
 <head>
-    <Header/>
     <title>Registro de Carro</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css">
+    <style>
+        body {
+            /* Imagen de fondo */
+            background-image: url('https://cdn.pixabay.com/video/2023/09/21/181537-866999852_tiny.jpg');
+            background-size: cover; /* Asegura que la imagen cubra todo el fondo */
+            background-position: center; /* Centra la imagen */
+        }
+        .form-background {
+            background-color: rgba(0, 0, 0, 0.6); /* Fondo negro con opacidad del 60% */
+        }
+    </style>
 </head>
 <body class="bg-black text-white">
     <div class="min-h-screen flex items-center justify-center">
-        <form class="bg-gray-800 p-8 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-bold mb-6 text-center">Bienvenido a registra tu carro</h2>
+        <!-- Añadir la clase personalizada para la transparencia y el borde blanco -->
+        <form class="form-background bg-gray-800 p-8 rounded-lg shadow-lg border-2 border-white">
+            <h2 class="text-2xl font-bold mb-6 text-center">Bienvenido a registrar tu carro</h2>
             <div class="mb-4">
                 <label for="marca" class="block text-sm font-bold mb-2">MARCA:</label>
                 <input type="text" id="marca" name="marca" placeholder="Escribe la marca" class="w-full p-2 rounded-md text-black">
@@ -30,10 +43,11 @@ import Header from '../components/Header.astro';
             </div>
             <div class="mb-6">
                 <label for="imagen" class="block text-sm font-bold mb-2">IMAGEN:</label>
-                <input type="file" id="imagen" name="imagen" class="w-full p-2 file:bg-green-500 file:border-none file:text-white file:rounded-md">
+                <input type="text" id="Imagen" name="Imagen" placeholder="Link de la imagen" class="w-full p-2 rounded-md text-black">
             </div>
             <button type="submit" class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Registrar Carro</button>
         </form>
     </div>
 </body>
+<Footer/>
 </html>

@@ -1,21 +1,49 @@
 ---
 import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 ---
+<html>
+<head>
+    <title>Login - Tienda de Carros</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css">
+    <style>
+        body {
+            background-image: url('https://motor-import.com/wp-content/uploads/2021/01/Comment-importer-sa-voiture-du-Japon-avec-Motorimport1-1024x576.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .login-form {
+            background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <Header/>
+    <div class="flex justify-end items-center min-h-screen">
+        <form class="login-form flex flex-col p-8 bg-gray-800 rounded-lg shadow-md m-10">
+            <h2 class="text-lg font-bold text-white mb-6">Login</h2>
 
+            <!-- Campo de usuario -->
+            <div class="mb-4">
+                <label for="username" class="block text-sm font-medium text-gray-300">User</label>
+                <input type="text" id="username" name="username" class="mt-1 block w-full px-3 py-2 text-black rounded-md" required>
+            </div>
 
+            <!-- Campo de contraseña -->
+            <div class="mb-6">
+                <label for="password" class="block text-sm font-medium text-gray-300">Password</label>
+                <input type="password" id="password" name="password" class="mt-1 block w-full px-3 py-2 text-black rounded-md" required>
+            </div>
 
-<Header/>
-<form class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-    <div class="p-8 bg-white rounded-lg shadow-md">
-        <h2 class="text-lg font-bold">Login</h2>
-        <div class="my-4">
-            <label for="username" class="block text-sm font-medium text-gray-700">User</label>
-            <input type="text" id="username" name="username" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
-        </div>
-        <div class="mb-6">
-            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-            <input type="password" id="password" name="password" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
-        </div>
-        <button type="submit" class="w-full px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-700">Enter</button>
+            <!-- Botón de Registrarse -->
+            <div class="mb-4 text-center">
+                <a href="/registroUsuario" class="w-full inline-block px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-700 transition-all">Registrarse</a>
+            </div>
+
+            <!-- Botón de Login -->
+            <button type="submit" class="w-full px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-700 transition-all">Enter</button>
+        </form>
     </div>
-</form>
+    <Footer/>
+</body>
+</html>
