@@ -1,0 +1,6 @@
+main: Producción estable.
+develop: Desarrollo en curso.
+feature/: Nuevas funcionalidades.
+bugfix/: Corrección de errores no críticos.
+release/: Preparación para una nueva versión.
+hotfix/: Corrección de errores críticos.
