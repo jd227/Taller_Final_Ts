@@ -1,23 +1,20 @@
-# Usamos la imagen oficial de Node.js como base
+# Usa una imagen base de Node.js
 FROM node:18
 
-# Establecemos el directorio de trabajo en el contenedor
+# Establece el directorio de trabajo dentro del contenedor
 WORKDIR /usr/src/app
 
-# Copiamos los archivos package.json y package-lock.json
+# Copia el archivo package.json y package-lock.json
 COPY package*.json ./
 
-# Instalamos las dependencias
+# Instala las dependencias del proyecto
 RUN npm install
 
-# Copiamos el resto del código fuente
+# Copia el resto del código de la aplicación
 COPY . .
 
-# Compilamos TypeScript a JavaScript
-RUN npm run build
-
-# Exponemos el puerto en el que correrá la aplicación (asegúrate que sea el mismo que usas en tu código)
+# Exponer el puerto en el que correrá la aplicación
 EXPOSE 5000
 
-# Iniciamos la aplicación
-CMD ["npm", "run", "start"]
+# Comando para ejecutar la aplicación
+CMD ["npm", "start"]
