@@ -1,24 +1,34 @@
-version: '3'
+version: '3.8'
 services:
-  backend:
-    build: .
-    ports:
-      - "5000:5000"
-    depends_on:
-      - mongo
-    environment:
-      MONGO_URI: "mongodb://mongo:27017/tienda-carros"
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    command: "npm run start"
-
+  # Servicio MongoDB
   mongo:
     image: mongo:latest
+    container_name: mongodb
+    restart: always
     ports:
       - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
       - mongo-data:/data/db
+
+  # Servicio API
+  api:
+    build: .
+    container_name: crud-api
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://root:example@mongo:27017/crudDB?authSource=admin
+      - SESSION_SECRET=mysecret
+      - PORT=5000
+    depends_on:
+      - mongo
+    volumes:
+      - .:/usr/src/app
+    command: npm start
 
 volumes:
   mongo-data:
