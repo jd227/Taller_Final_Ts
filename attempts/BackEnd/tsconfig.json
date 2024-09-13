@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",        // Usar módulos ES
+    "target": "ESNext",        // Target moderno para ECMAScript
+    "moduleResolution": "Node", // Resolver módulos como Node.js
+    "outDir": "./dist",        // Salida de los archivos compilados
+    "esModuleInterop": true,   // Habilitar compatibilidad con módulos CommonJS
+    "skipLibCheck": true,      // Ignorar la revisión de tipos en los archivos de declaración
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src"]
+}
