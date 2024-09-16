@@ -3,56 +3,64 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
 // Función para manejar el envío del formulario y enviar los datos a la API
-async function handleSubmit(event: Event) {
-  event.preventDefault(); // Evitar la recarga de la página
+// async function handleSubmit(event: Event) {
+//   event.preventDefault(); // Evitar la recarga de la página
 
-  // Captura los datos del formulario
-  const brand = document.getElementById('marca') as HTMLInputElement;
-  const model = document.getElementById('modelo') as HTMLInputElement;
-  const year = document.getElementById('year') as HTMLInputElement;
-  const owner = document.getElementById('owner') as HTMLInputElement;
-  const price = document.getElementById('precio') as HTMLInputElement;
-  const Image = document.getElementById('imagen') as HTMLInputElement;
+//   // Captura los datos del formulario
+//   const brand = document.getElementById('marca') as HTMLInputElement;
+//   const model = document.getElementById('modelo') as HTMLInputElement;
+//   const year = document.getElementById('year') as HTMLInputElement;
+//   const owner = document.getElementById('owner') as HTMLInputElement;
+//   const price = document.getElementById('precio') as HTMLInputElement;
+//   const Image = document.getElementById('imagen') as HTMLInputElement;
 
-  // Verifica que todos los elementos existan
-  if (!brand || !model || !year || !owner || !price || !Image) {
-    alert('Todos los campos son requeridos.');
-    return;
-  }
+//   // Verifica que todos los elementos existan
+//   if (!brand || !model || !year || !owner || !price || !Image) {
+//     alert('Todos los campos son requeridos.');
+//     return;
+//   }
 
-  // Construye el objeto del carro
-  const carData = {
-    brand: brand.value,
-    model: model.value,
-    year: parseInt(year.value),
-    owner: owner.value,
-    Image: Image.value,
-    price: parseFloat(price.value)
-  };
+//   // Construye el objeto del carro
+//   const carData = {
+//     brand: brand.value,
+//     model: model.value,
+//     year: year.value,
+//     owner: owner.value,
+//     Image: Image.value,
+//     price: price.value
+//   };
 
-  try {
-    // Enviar los datos del formulario a la API
-    const response = await fetch('http://localhost:5000/api/cars', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(carData),
-    });
+//   // Imprime el objeto carData para verificar los valores capturados
+//   console.log('Datos del carro a enviar:', carData);
 
-    // Manejo de la respuesta
-    if (response.ok) {
-      alert('Carro registrado exitosamente');
-      document.getElementById('car-form'); // Limpiar el formulario
-    } else {
-      const errorData = await response.json();
-      alert('Error al registrar el carro: ' + errorData.message);
-    }
-  } catch (error) {
-    console.error('Error al enviar los datos:', error);
-    alert('Hubo un problema al registrar el carro. Inténtalo de nuevo.');
-  }
-}
+//   try {
+//     // Enviar los datos del formulario a la API
+//     const response = await fetch('http://localhost:5000/api/cars', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(carData),
+//     });
+
+//     // Verifica si la respuesta de la API es correcta
+//     console.log('Respuesta de la API:', response);
+
+//     if (response.ok) {
+//       const responseData = await response.json();
+//       console.log('Respuesta exitosa:', responseData);
+//       alert('Carro registrado exitosamente');
+//       document.getElementById('car-form'); // Limpiar el formulario
+//     } else {
+//       const errorData = await response.json();
+//       console.error('Error al registrar el carro:', errorData);
+//       alert('Error al registrar el carro: ' + errorData.message);
+//     }
+//   } catch (error) {
+//     console.error('Error al enviar los datos:', error);
+//     alert('Hubo un problema al registrar el carro. Inténtalo de nuevo.');
+//   }
+// }
 ---
 
 <html>
@@ -108,11 +116,50 @@ async function handleSubmit(event: Event) {
                 <label for="imagen" class="block text-lg font-semibold text-white mb-2">URL de la Imagen</label>
                 <input type="url" id="imagen" name="imagen" placeholder="Link a la imagen del carro" class="w-full p-3 rounded-md text-black focus:bg-white focus:outline-none" required>
             </div>
-            <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-md transition-colors duration-300">
+            <button onclick="guardar()" type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-md transition-colors duration-300">
                 Registrar Carro
             </button>
         </form>
     </div>
     <Footer />
+
+    <script is:inline>
+        async function guardar() {
+          const brand = document.getElementById('marca').value;
+          const model = document.getElementById('modelo').value;
+          const year = document.getElementById('year').value;
+          const owner = document.getElementById('owner').value;
+          const price = document.getElementById('precio').value;
+          const Image = document.getElementById('imagen').value;
+      
+          if (!brand || !model || !year || !owner || !price || !Image) {
+            alert('Todos los campos son requeridos.');
+            return;
+          }
+      
+          const carData = { brand, model, year, owner, Image, price };
+      
+          try {
+            const response = await fetch('http://localhost:5000/api/cars', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(carData),
+            });
+      
+            if (response.ok) {
+              const responseData = await response.json();
+              alert('Carro registrado exitosamente');
+              document.getElementById('car-form').reset();
+            } else {
+              const errorData = await response.json();
+              alert('Error al registrar el carro: ' + errorData.message);
+            }
+          } catch (error) {
+            alert('Hubo un problema al registrar el carro.');
+          }
+        }
+      </script>
+      
+      
 </body>
 </html>

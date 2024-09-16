@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import session from 'express-session';
@@ -9,6 +10,8 @@ import userRoutes from './routes/user.routes';
 import personRoutes from './routes/person.routes';
 import carRoutes from './routes/car.routes';
 
+
+
 dotenv.config();
 const app = express();
 
@@ -18,6 +21,11 @@ mongoose.connect(process.env.MONGO_URI!)
   .catch((err) => console.error('Database connection error:', err));
 
 app.use(express.json());
+app.use(cors(
+  {
+    origin: 'http://localhost:4321',
+  }
+));
 app.use(helmet());
 app.use(morgan('dev'));
 
