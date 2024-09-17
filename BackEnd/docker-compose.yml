@@ -1,6 +1,5 @@
 version: '3.8'
 services:
-  # Servicio MongoDB
   mongo:
     image: mongo:latest
     container_name: mongodb
@@ -13,7 +12,6 @@ services:
     volumes:
       - mongo-data:/data/db
 
-  # Servicio API
   api:
     build: .
     container_name: crud-api
@@ -21,7 +19,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - MONGO_URI=mongodb://root:example@mongo:27017/crudDB?authSource=admin
+      - MONGO_URI=mongodb://root:example@mongo:27017/crudDB_v2?authSource=admin
       - SESSION_SECRET=mysecret
       - PORT=5000
     depends_on:
@@ -29,6 +27,5 @@ services:
     volumes:
       - .:/usr/src/app
     command: npm start
-
 volumes:
   mongo-data:

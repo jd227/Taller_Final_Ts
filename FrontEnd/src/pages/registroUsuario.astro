@@ -1,76 +1,90 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+
 ---
+
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Registro de Usuario - Tienda de Carros</title>
+    <title>Registro personas</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css">
     <style>
         body {
-            background-image: url('https://motor-import.com/wp-content/uploads/2021/01/Comment-importer-sa-voiture-du-Japon-avec-Motorimport1-1024x576.jpg');
+            background-image: url('https://cdn.pixabay.com/video/2023/09/21/181537-866999852_tiny.jpg');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
         }
-        .register-form {
-            background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+        .form-background {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        input, select {
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        input:focus, select:focus {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-color: #00ff00;
+            outline: none;
         }
     </style>
 </head>
-<body class="bg-gray-100">
-    <Header/>
-    <div class="flex justify-center items-center min-h-screen">
-        <form class="register-form flex flex-col p-8 bg-gray-800 rounded-lg shadow-md m-10 w-full max-w-md">
-            <h2 class="text-lg font-bold text-white mb-6 text-center">Registro de Usuario</h2>
-
-            <!-- Campo de nombre -->
-            <div class="mb-4">
-                <label for="name" class="block text-sm font-medium text-gray-300">Nombre Completo</label>
-                <input type="text" id="name" name="name" placeholder="Escribe tu nombre" class="mt-1 block w-full px-3 py-2 text-black rounded-md" required>
+<body class="bg-black text-white">
+    <Header />
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <form id="car-form" class="form-background p-8 rounded-lg shadow-lg border-2 border-white max-w-lg w-full" onsubmit="handleSubmit(event)">
+            <h2 class="text-3xl font-bold mb-8 text-center text-green-400">Registro de Usuarios</h2>
+            <div class="mb-6">
+                <label for="marca" class="block text-lg font-semibold text-white mb-2">Nombre de Usuario</label>
+                <input type="text" id="marca" name="marca" placeholder="👦" class="w-full p-3 rounded-md text-black focus:bg-white focus:outline-none" required>
             </div>
-
-            <!-- Campo de usuario -->
-            <div class="mb-4">
-                <label for="username" class="block text-sm font-medium text-gray-300">Nombre de Usuario</label>
-                <input type="text" id="username" name="username" placeholder="Escribe tu nombre de usuario" class="mt-1 block w-full px-3 py-2 text-black rounded-md" required>
+            <div class="mb-6">
+                <label for="modelo" class="block text-lg font-semibold text-white mb-2">Password</label>
+                <input type="password" id="modelo" name="modelo"  class="w-full p-3 rounded-md text-black focus:bg-white focus:outline-none" required>
             </div>
-
-            <!-- Campo de contraseña -->
-            <div class="mb-4">
-                <label for="password" class="block text-sm font-medium text-gray-300">Contraseña</label>
-                <input type="password" id="password" name="password" placeholder="Escribe tu contraseña" class="mt-1 block w-full px-3 py-2 text-black rounded-md" required>
+            <div class="mb-6">
+                <label for="year" class="block text-lg font-semibold text-white mb-2">Email</label>
+                <input type="email" id="year" name="year" class="w-full p-3 rounded-md text-black focus:bg-white focus:outline-none" required>
             </div>
-
-            <!-- Campo de teléfono -->
-            <div class="mb-4">
-                <label for="phone" class="block text-sm font-medium text-gray-300">Teléfono</label>
-                <input type="tel" id="phone" name="phone" placeholder="Escribe tu número de teléfono" class="mt-1 block w-full px-3 py-2 text-black rounded-md" required>
-            </div>
-
-            <!-- Campo de sexo -->
-            <div class="mb-4">
-                <label for="sex" class="block text-sm font-medium text-gray-300">Sexo</label>
-                <select id="sex" name="sex" class="mt-1 block w-full px-3 py-2 text-black rounded-md" required>
-                    <option value="">Selecciona tu sexo</option>
-                    <option value="male">Masculino</option>
-                    <option value="female">Femenino</option>
-                    <option value="other">Otro</option>
-                </select>
-            </div>
-
-            <!-- Campo de edad -->
-            <div class="mb-4">
-                <label for="age" class="block text-sm font-medium text-gray-300">Edad</label>
-                <input type="number" id="age" name="age" placeholder="Escribe tu edad" class="mt-1 block w-full px-3 py-2 text-black rounded-md" required>
-            </div>
-
-            <!-- Botón de registro -->
-            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-all">
-                Registrarse
+            <button onclick="guardar()" type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-md transition-colors duration-300">
+                Registrar Usuario
             </button>
         </form>
     </div>
-    <Footer/>
+    <Footer />
+
+    <script is:inline>
+        async function guardar() {
+          const username = document.getElementById('marca').value;
+          const password = document.getElementById('modelo').value;
+          const email = document.getElementById('year').value;
+
+          if (!username || !password || !email) {
+            alert('Todos los campos son requeridos.');
+            return;
+          }
+      
+          const userData = { username, password, email};
+      
+          try {
+            const response = await fetch('http://localhost:5000/api/users', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(userData),
+            });
+      
+            if (response.ok) {
+              const responseData = await response.json();
+              alert('registrado exitosamente');
+              document.getElementById('car-form').reset();
+            } else {
+              const errorData = await response.json();
+              alert('Error al registrar ' + errorData.message);
+            }
+          } catch (error) {
+            alert('Hubo un problema en el registro');
+          }
+        }
+      </script>
 </body>
 </html>
