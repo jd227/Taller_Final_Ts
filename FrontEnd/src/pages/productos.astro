@@ -8,7 +8,7 @@ import Footer from '../components/Footer.astro';
     <title>Tienda de Carros</title>
     <meta charset="UTF-8">
     <style>
-        /* Estilos para el modal */
+        /* Estilos para el modal para poder editar un producto*/
         .modal {
           display: none;
           position: fixed;
@@ -18,19 +18,21 @@ import Footer from '../components/Footer.astro';
           width: 100%;
           height: 100%;
           overflow: auto;
-          background-color: rgba(0,0,0,0.4);
+          background-color: rgba(0,0,0,0.8);
         }
 
         .modal-content {
-          background-color: #fff;
-          margin: 15% auto;
+          background-color: #1a1a1a;
+          color: #fff;
+          margin: 10% auto;
           padding: 20px;
           border: 1px solid #888;
           width: 80%;
+          border-radius: 8px;
         }
 
         .close {
-          color: #aaa;
+          color: #fff;
           float: right;
           font-size: 28px;
           font-weight: bold;
@@ -38,18 +40,18 @@ import Footer from '../components/Footer.astro';
 
         .close:hover,
         .close:focus {
-          color: black;
+          color: #ccc;
           text-decoration: none;
           cursor: pointer;
         }
     </style>
 </head>
-<body>
+<body class="bg-black text-white">
     <Header />
     <div class="container mx-auto px-4 py-16">
-        <h1 class="text-xl font-bold text-center">Bienvenido a la Tienda de Carros</h1>
-        <p class="text-center mt-4">Explora nuestra amplia gama de carros y encuentra el perfecto para ti.</p>
-        <div id="car-list" class="grid grid-cols-3 gap-4"></div>
+        <h1 class="text-4xl font-bold text-center text-white">Bienvenido a la Tienda de Carros</h1>
+        <p class="text-center mt-4 text-gray-300">Explora nuestra amplia gama de carros y encuentra el perfecto para ti.</p>
+        <div id="car-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8"></div>
     </div>
     <Footer />
 
@@ -57,19 +59,19 @@ import Footer from '../components/Footer.astro';
     <div id="editModal" class="modal">
       <div class="modal-content">
         <span class="close">&times;</span>
-        <h2>Editar Carro</h2>
+        <h2 class="text-2xl font-bold mb-4">Editar Carro</h2>
         <form id="editForm">
-          <label for="carModel">Modelo:</label>
-          <input type="text" id="carModel" name="model" class="w-full mb-4 p-2 border" required>
+          <label for="carModel" class="block text-gray-400 mb-2">Modelo:</label>
+          <input type="text" id="carModel" name="model" class="w-full mb-4 p-2 border border-gray-600 bg-gray-800 text-white rounded" required>
           
-          <label for="carYear">Año:</label>
-          <input type="number" id="carYear" name="year" class="w-full mb-4 p-2 border" required>
+          <label for="carYear" class="block text-gray-400 mb-2">Año:</label>
+          <input type="number" id="carYear" name="year" class="w-full mb-4 p-2 border border-gray-600 bg-gray-800 text-white rounded" required>
           
-          <label for="carPrice">Precio:</label>
-          <input type="number" id="carPrice" name="price" class="w-full mb-4 p-2 border" required>
+          <label for="carPrice" class="block text-gray-400 mb-2">Precio:</label>
+          <input type="number" id="carPrice" name="price" class="w-full mb-4 p-2 border border-gray-600 bg-gray-800 text-white rounded" required>
           
           <input type="hidden" id="carId" name="id">
-          <button type="submit" class="bg-blue-500 text-white py-2 px-4 mt-4">Guardar Cambios</button>
+          <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 mt-4 rounded shadow-lg transition-transform transform hover:scale-105">Guardar Cambios</button>
         </form>
       </div>
     </div>
@@ -117,7 +119,7 @@ import Footer from '../components/Footer.astro';
             
           });
           if (response.ok) {
-            alert('Carro eliminado exitosamente');
+            alert('Vehículo eliminado exitosamente');
             loadCars();
           } else {
             const errorData = await response.json();
@@ -169,20 +171,22 @@ import Footer from '../components/Footer.astro';
         const carList = document.getElementById('car-list');
         if (carList) {
           if (cars.length === 0) {
-            carList.innerHTML = '<p>No hay carros disponibles en este momento.</p>';
+            carList.innerHTML = '<p class="text-center text-gray-400">No hay carros disponibles en este momento.</p>';
           } else {
             carList.innerHTML = cars.map((car) => `
-              <div class="border p-4 mb-4">
-                <h2 class="text-lg font-bold">${car.brand} ${car.model} (${car.year})</h2>
-                <p>Propietario: ${car.owner}</p>
-                <p>Precio: $${car.price}</p>
-                <img src="${car.Image}" alt="Imagen del Carro" class="w-full h-auto"/>
-                <button class="bg-red-500 text-white py-2 px-4 mt-4" data-id="${car._id}">
-                  Eliminar
-                </button>
-                <button class="bg-blue-500 text-white py-2 px-4 mt-4" data-edit-id="${car._id}">
-                  Editar
-                </button>
+              <div class="bg-gray-800 text-white p-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-transform">
+                <h2 class="text-xl font-bold">${car.brand} ${car.model} (${car.year})</h2>
+                <p class="text-gray-400">Propietario: ${car.owner}</p>
+                <p class="text-gray-400">Precio: $${car.price}</p>
+                <img src="${car.Image}" alt="Imagen del Carro" class="w-full h-auto mt-4 mb-4 rounded-lg"/>
+                <div class="flex justify-between">
+                  <button class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded shadow-lg transition-transform transform hover:scale-105" data-id="${car._id}">
+                    Eliminar
+                  </button>
+                  <button class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded shadow-lg transition-transform transform hover:scale-105" data-edit-id="${car._id}">
+                    Editar
+                  </button>
+                </div>
               </div>
             `).join('');
 
