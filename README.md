@@ -1,4 +1,4 @@
-# Tienda Deportiva
+# Tienda de Vehiculos
 
 ¡Bienvenido al proyecto Tienda de Vehiculos! Este es un sitio web de comercio electrónico desarrollado utilizando **Tailwind**, **Astro**, **MongoDB**, **JavaScript**, **Node.js**,**Express** y **TypeScript**.
 
