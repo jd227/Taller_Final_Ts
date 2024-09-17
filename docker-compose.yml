@@ -11,6 +11,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
       - mongo-data:/data/db
+    networks:
+      - app-network
 
   api:
     build: ./BackEnd
@@ -27,18 +29,20 @@ services:
     volumes:
       - ./BackEnd:/usr/src/app
     command: npm start
+    networks:
+      - app-network
 
   frontend:
-    build: ./FrontEnd
-    container_name: astro-frontend
-    restart: always
+    build:
+      context: ./FrontEnd
     ports:
       - "4321:4321"
-    volumes:
-      - ./FrontEnd:/app
-    environment:
-      - NODE_ENV=development
-    command: npm run dev
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   mongo-data:

@@ -1,4 +1,4 @@
-# Utilizamos una imagen base de Node.js
+# Utilizamos una imagen base ligera de Node.js
 FROM node:18-alpine
 
 # Establecemos el directorio de trabajo en el contenedor
@@ -12,7 +12,10 @@ RUN npm install
 
 # Copiamos el resto del código del proyecto al contenedor
 COPY . .
-RUN npx tsc
+
+# Compilamos el código TypeScript
+RUN npx tsc --noEmit
+
 # Expone el puerto 4321 para el servidor de desarrollo
 EXPOSE 4321
 
