@@ -1,0 +1,218 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<html>
+<head>
+    <title>Tienda de Carros</title>
+    <meta charset="UTF-8">
+    <style>
+        /* Estilos para el modal */
+        .modal {
+          display: none;
+          position: fixed;
+          z-index: 1;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+          background-color: #fff;
+          margin: 15% auto;
+          padding: 20px;
+          border: 1px solid #888;
+          width: 80%;
+        }
+
+        .close {
+          color: #aaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+          color: black;
+          text-decoration: none;
+          cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <Header />
+    <div class="container mx-auto px-4 py-16">
+        <h1 class="text-xl font-bold text-center">Bienvenido a la Tienda de Carros</h1>
+        <p class="text-center mt-4">Explora nuestra amplia gama de carros y encuentra el perfecto para ti.</p>
+        <div id="car-list" class="grid grid-cols-3 gap-4"></div>
+    </div>
+    <Footer />
+
+    <!-- Modal para edición -->
+    <div id="editModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Editar Carro</h2>
+        <form id="editForm">
+          <label for="carModel">Modelo:</label>
+          <input type="text" id="carModel" name="model" class="w-full mb-4 p-2 border" required>
+          
+          <label for="carYear">Año:</label>
+          <input type="number" id="carYear" name="year" class="w-full mb-4 p-2 border" required>
+          
+          <label for="carPrice">Precio:</label>
+          <input type="number" id="carPrice" name="price" class="w-full mb-4 p-2 border" required>
+          
+          <input type="hidden" id="carId" name="id">
+          <button type="submit" class="bg-blue-500 text-white py-2 px-4 mt-4">Guardar Cambios</button>
+        </form>
+      </div>
+    </div>
+
+    <script type="module">
+      let selectedCarId = null;
+
+      // Mostrar el modal
+      const modal = document.getElementById("editModal");
+      const closeModalButton = document.querySelector(".close");
+
+      closeModalButton.addEventListener('click', () => {
+        modal.style.display = "none";
+      });
+
+      window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      });
+
+      // Función para obtener los carros
+      async function fetchCars() {
+        try {
+          const response = await fetch('http://localhost:5000/api/cars');
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const cars = await response.json();
+          return cars;
+        } catch (error) {
+          console.error('Failed to fetch cars:', error);
+          return [];
+        }
+      }
+
+      // Función para eliminar un carro
+      async function deleteCar(carid) {
+        try {
+          const response = await fetch(`http://localhost:5000/api/cars/${carid}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            
+          });
+          if (response.ok) {
+            alert('Carro eliminado exitosamente');
+            loadCars();
+          } else {
+            const errorData = await response.json();
+            console.error('Error al eliminar el carro:', errorData);
+            alert('Error al eliminar el carro: ' + errorData.message);
+          }
+        } catch (e) {
+          console.error('Failed to delete car:', e);
+        }
+      }
+
+      // Función para mostrar el modal con los datos del carro a editar
+      function showEditModal(car) {
+        document.getElementById('carModel').value = car.model;
+        document.getElementById('carYear').value = car.year;
+        document.getElementById('carPrice').value = car.price;
+        document.getElementById('carId').value = car._id;
+
+        modal.style.display = "block";
+      }
+
+      // Función para editar un carro
+      async function editCar(carid, updatedCar) {
+        try {
+          const response = await fetch(`http://localhost:5000/api/cars/${carid}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedCar),
+          });
+          if (response.ok) {
+            alert('Carro actualizado exitosamente');
+            loadCars();
+            modal.style.display = "none";
+          } else {
+            const errorData = await response.json();
+            console.error('Error al actualizar el carro:', errorData);
+            alert('Error al actualizar el carro: ' + errorData.message);
+          }
+        } catch (e) {
+          console.error('Failed to update car:', e);
+        }
+      }
+
+      // Cargar carros en la página
+      async function loadCars() {
+        const cars = await fetchCars();
+        const carList = document.getElementById('car-list');
+        if (carList) {
+          if (cars.length === 0) {
+            carList.innerHTML = '<p>No hay carros disponibles en este momento.</p>';
+          } else {
+            carList.innerHTML = cars.map((car) => `
+              <div class="border p-4 mb-4">
+                <h2 class="text-lg font-bold">${car.brand} ${car.model} (${car.year})</h2>
+                <p>Propietario: ${car.owner}</p>
+                <p>Precio: $${car.price}</p>
+                <img src="${car.Image}" alt="Imagen del Carro" class="w-full h-auto"/>
+                <button class="bg-red-500 text-white py-2 px-4 mt-4" data-id="${car._id}">
+                  Eliminar
+                </button>
+                <button class="bg-blue-500 text-white py-2 px-4 mt-4" data-edit-id="${car._id}">
+                  Editar
+                </button>
+              </div>
+            `).join('');
+
+            // Asignación de eventos a botones
+            document.querySelectorAll('[data-id]').forEach(button => {
+              button.addEventListener('click', () => deleteCar(button.dataset.id));
+            });
+
+            // Asignar eventos a los botones de edición
+            document.querySelectorAll('[data-edit-id]').forEach(button => {
+              const car = cars.find(c => c._id === button.dataset.editId);
+              button.addEventListener('click', () => showEditModal(car));
+            });
+          }
+        }
+      }
+
+      // Manejar el envío del formulario de edición
+      document.getElementById('editForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const updatedCar = {
+          model: document.getElementById('carModel').value,
+          year: document.getElementById('carYear').value,
+          price: document.getElementById('carPrice').value,
+        };
+        const carid = document.getElementById('carId').value;
+        editCar(carid, updatedCar);
+      });
+
+      document.addEventListener('DOMContentLoaded', loadCars);
+    </script>
+</body>
+</html>
