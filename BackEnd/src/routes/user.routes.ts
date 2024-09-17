@@ -5,7 +5,7 @@ import { log } from 'console';
 const router = Router();
 
 // Rutas para usuarios
-router.post('/', isAuthenticated , createUser);
+router.post('/', createUser);
 router.get('/', getAllUsers);
 router.get('/:id', getUserById);
 router.put('/:id', updateUser);

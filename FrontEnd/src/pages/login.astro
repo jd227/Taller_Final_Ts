@@ -64,7 +64,6 @@ import Footer from '../components/Footer.astro';
             try {
                 const response = await fetch('http://localhost:5000/api/users/login', { 
                     method: 'POST',
-                    credentials: "include", // Enviar cookies con la solicitud
                     headers: {
                         'Content-Type': 'application/json',
                     },
