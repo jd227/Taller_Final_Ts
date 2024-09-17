@@ -21,11 +21,6 @@ mongoose.connect(process.env.MONGO_URI!)
   .catch((err) => console.error('Database connection error:', err));
 
 app.use(express.json());
-app.use(cors(
-  {
-    origin: 'http://localhost:4321',
-  }
-));
 app.use(helmet());
 app.use(morgan('dev'));
 
@@ -34,6 +29,9 @@ app.use(session({
   secret: process.env.SESSION_SECRET!,
   resave: false,
   saveUninitialized: false,
+  cookie: {
+    maxAge: 30 * 60 * 1000, // 30 minutos
+  },
   store: MongoStore.create({
   mongoUrl: process.env.MONGO_URI,
   }),

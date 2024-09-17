@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { createCar, getAllCars, getCarById, updateCar, deleteCar } from '../controller/car.controller';
-
+import   { isAuthenticated } from '../middleware/middleware';
 const router = Router();
 
 // Rutas para carros
